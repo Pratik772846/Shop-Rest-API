@@ -2,10 +2,21 @@ const express= require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-
+const mongoose = require('mongoose');
+const cors = require('cors');
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 
+mongoose.set("strictQuery", false);
+// mongoose.set("useMongoClient", true);
+// mongoose.connect('mongodb+srv://Pratik:'+ process.env.MONGO_ATLAS_PW + '@cluster0.3leactl.mongodb.net/?retryWrites=true&w=majority' )
+// .then(()=>console.log('connected'))
+// .catch(e=>console.log(e));
+
+mongoose.connect('mongodb+srv://Pratik:'+ process.env.MONGO_ATLAS_PW + '@cluster0.3leactl.mongodb.net/?retryWrites=true&w=majority' 
+)
+
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -20,6 +31,7 @@ app.use((req,res,next)=>{
     }
     next();
 });
+
 app.use('/orders', orderRoutes);
 app.use('/products', productRoutes);
 
