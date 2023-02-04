@@ -96,7 +96,9 @@ router.post('/',upload.single('productImage'),(req,res,next)=>{
 
 router.get('/:productId',(req,res,next)=>{
     const id = req.params.productId;
-    Product.findById(id).exec().then(doc=>{
+    Product.findById(id).
+    select('name price _id productImage').
+    exec().then(doc=>{
         console.log("From database",doc);
         if(doc){
             res.status(200).json({
