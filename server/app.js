@@ -15,7 +15,7 @@ mongoose.set("strictQuery", false);
 
 mongoose.connect('mongodb+srv://Pratik:'+ process.env.MONGO_ATLAS_PW + '@cluster0.3leactl.mongodb.net/?retryWrites=true&w=majority' 
 )
-
+mongoose.Promise = global.Promise;
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
