@@ -18,6 +18,7 @@ mongoose.connect('mongodb+srv://Pratik:'+ process.env.MONGO_ATLAS_PW + '@cluster
 mongoose.Promise = global.Promise;
 app.use(cors());
 app.use(morgan('dev'));
+app.use('/uploads',express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
