@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+const userRoutes = require('./api/routes/user');
 
 mongoose.set("strictQuery", false);
 // mongoose.set("useMongoClient", true);
@@ -35,6 +36,7 @@ app.use((req,res,next)=>{
 
 app.use('/orders', orderRoutes);
 app.use('/products', productRoutes);
+app.use('/user', userRoutes);
 
 app.use((req,res,next)=>{
     const error = new Error('Not found');
