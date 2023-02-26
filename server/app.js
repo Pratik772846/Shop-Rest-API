@@ -9,11 +9,6 @@ const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
 
 mongoose.set("strictQuery", false);
-// mongoose.set("useMongoClient", true);
-// mongoose.connect('mongodb+srv://Pratik:'+ process.env.MONGO_ATLAS_PW + '@cluster0.3leactl.mongodb.net/?retryWrites=true&w=majority' )
-// .then(()=>console.log('connected'))
-// .catch(e=>console.log(e));
-
 mongoose.connect('mongodb+srv://Pratik:'+ process.env.MONGO_ATLAS_PW + '@cluster0.3leactl.mongodb.net/?retryWrites=true&w=majority' 
 )
 mongoose.Promise = global.Promise;
