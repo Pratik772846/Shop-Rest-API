@@ -28,6 +28,7 @@ const upload = multer({
     fileFilter:fileFilter
 });
 // cannot do /uploads/ because it is not a static folder
+
 router.get('/',(req,res,next)=>{
     Product.find()
     .select("name price _id productImage")
