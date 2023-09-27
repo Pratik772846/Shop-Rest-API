@@ -4,6 +4,7 @@ const Product = require('../model/product');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
+
 const storage = multer.diskStorage({
     destination: function(req,file,cb){
         cb(null,'./uploads/');
@@ -12,6 +13,7 @@ const storage = multer.diskStorage({
         cb(null, new Date().toISOString()+file.originalname);
     }
 });
+
 const fileFilter = (req,file,cb)=>{
     if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
         cb(null,true);
@@ -27,39 +29,10 @@ const upload = multer({
     },
     fileFilter:fileFilter
 });
+
 // cannot do /uploads/ because it is not a static folder
 
-router.get('/',(req,res,next)=>{
-    Product.find()
-    .select("name price _id productImage")
-    .exec()
-    .then(docs=>{
-        const response = {
-            count: docs.length,
-            products: docs.map(doc=>{
-                return {
-                    name: doc.name,
-                    price: doc.price,
-                    _id: doc._id,
-                    productImage : doc.productImage,
-                    request: {
-                        type: 'GET',
-                        url: 'http://localhost:3000/products/'+doc._id
-                    }
-                }
-            })
-        };
-
-        // console.log(docs);
-        res.status(200).json(response);
-    })
-    .catch(err=>{
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    })
-});
+                       
 
 router.post('/',checkAuth,upload.single('productImage'),(req,res,next)=>{
     console.log(req.file);
@@ -90,10 +63,6 @@ router.post('/',checkAuth,upload.single('productImage'),(req,res,next)=>{
 
         });
     });
-    // res.status(200).json({
-    //     message: 'Handling POST requests to /products',
-    //     createdProduct :product
-    // });
 });
 
 router.get('/:productId',(req,res,next)=>{
@@ -126,13 +95,11 @@ router.get('/:productId',(req,res,next)=>{
     );
 });
 
-// body for patch
-// [
-//     {"propName": "name", "value": "updated name"}
-// ]
+
 router.patch('/:productId',checkAuth,(req,res,next)=>{
     const id = req.params.productId;
     const updateOps ={};
+    console.log(req.body)
     for(const ops of req.body){
         updateOps[ops.propName] = ops.value;
     }
@@ -141,10 +108,7 @@ router.patch('/:productId',checkAuth,(req,res,next)=>{
             console.log(result);
             res.status(200).json({
                 message: 'Product updated',
-                request:{
-                    type: 'GET',
-                    url: 'http://localhost:3000/products/'+id
-                }
+                result:result
             });
         }
         ).catch(err=>{
